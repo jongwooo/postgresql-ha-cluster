@@ -1,0 +1,54 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Ansible
+*.retry
+inventory/*.ini
+!inventory/*.ini.example
+
+# Ansible Vault
+*.vault
+*.vault.yml
+*.vault.yaml
+!*vault.yml.example
+**/group_vars/*/vault.yml
+
+# SSH keys
+*.pem
+*.key
+id_rsa
+id_ed25519
+
+# UTM VM files
+*.utm
+
+# Secrets / Environment
+.env
+.env.*
+secrets.yml
+secrets.yaml
+
+# Python (ansible venv)
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+*.log
+
+# Claude
+.claude/
