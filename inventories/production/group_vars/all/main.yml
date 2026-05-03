@@ -1,0 +1,19 @@
+ansible_user: itsyssup
+ansible_port: 11122
+
+common_packages:
+  - vim
+  - wget
+  - curl
+  - telnet
+  - git
+  - net-tools
+  - bind-utils
+  - tar
+  - chrony
+
+timezone: "Asia/Seoul"
+swappiness: 1
+
+internal_network_name: internal
+internal_network_cidr: "10.220.100.0/24"

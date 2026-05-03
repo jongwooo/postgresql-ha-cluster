@@ -1,0 +1,15 @@
+---
+- name: Check current vm.swappiness value
+  ansible.builtin.command: sysctl -n vm.swappiness
+  register: swappiness_status
+  changed_when: false
+  failed_when: false
+
+- name: "Set vm.swappiness to {{ swappiness }}"
+  ansible.posix.sysctl:
+    name: vm.swappiness
+    value: "{{ swappiness }}"
+    sysctl_file: /etc/sysctl.d/99-swap.conf
+    state: present
+    reload: true
+  when: swappiness_status.stdout | int != swappiness | int

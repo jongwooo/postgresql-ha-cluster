@@ -1,0 +1,15 @@
+---
+- name: Check if firewalld is masked
+  ansible.builtin.command: systemctl is-enabled firewalld
+  register: firewalld_status
+  changed_when: false
+  failed_when: false
+
+- name: Stop and disable firewalld
+  ansible.builtin.systemd:
+    name: firewalld
+    state: stopped
+    enabled: false
+    masked: true
+  ignore_errors: true
+  when: firewalld_status.stdout != 'masked'

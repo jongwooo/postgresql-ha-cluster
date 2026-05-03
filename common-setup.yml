@@ -1,0 +1,14 @@
+---
+- name: Common setup for all VMs
+  hosts: all
+  become: true
+  roles:
+    - 00_hosts_setup
+    - 01_dnf_upgrade
+    - 02_install_packages
+    - 03_selinux_disable
+    - 04_firewalld_disable
+    - 05_iptables_setup
+    - 06_ntp_setup
+    - 07_swap_config
+    - 08_ssh_hardening

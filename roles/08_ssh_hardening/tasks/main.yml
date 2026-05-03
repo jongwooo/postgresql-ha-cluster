@@ -1,0 +1,41 @@
+---
+- name: Check current sshd_config settings
+  ansible.builtin.shell: |
+    grep -qE '^PermitRootLogin no$' /etc/ssh/sshd_config &&
+    grep -qE '^PasswordAuthentication yes$' /etc/ssh/sshd_config &&
+    grep -qE '^PermitEmptyPasswords no$' /etc/ssh/sshd_config
+  register: sshd_config_status
+  changed_when: false
+  failed_when: false
+
+- name: Backup sshd_config
+  ansible.builtin.copy:
+    src: /etc/ssh/sshd_config
+    dest: /etc/ssh/sshd_config.bak
+    remote_src: true
+    force: false
+  when: sshd_config_status.rc != 0
+
+- name: Disable root login
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PermitRootLogin "
+    line: "PermitRootLogin no"
+  notify: Restart sshd
+  when: sshd_config_status.rc != 0
+
+- name: Enable password authentication
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PasswordAuthentication "
+    line: "PasswordAuthentication yes"
+  notify: Restart sshd
+  when: sshd_config_status.rc != 0
+
+- name: Disable empty passwords
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PermitEmptyPasswords "
+    line: "PermitEmptyPasswords no"
+  notify: Restart sshd
+  when: sshd_config_status.rc != 0

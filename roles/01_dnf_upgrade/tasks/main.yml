@@ -1,0 +1,12 @@
+---
+- name: Check if dnf upgrade is needed
+  ansible.builtin.command: dnf check-update
+  register: dnf_check
+  changed_when: false
+  failed_when: false
+
+- name: Upgrade all packages
+  ansible.builtin.package:
+    name: "*"
+    state: latest
+  when: dnf_check.rc == 100

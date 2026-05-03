@@ -1,0 +1,7 @@
+---
+- name: Configure /etc/hosts for all VMs
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: ".*{{ hostvars[item]['ansible_host'] }}.*"
+    line: "{{ hostvars[item]['ansible_host'] }}    {{ item }}"
+  loop: "{{ groups['all'] }}"
